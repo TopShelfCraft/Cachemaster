@@ -1,0 +1,21 @@
+# --- .gitignore
+
+# --- Exclude personal working files, environment variable files, and other private stuff we don't want to version
+
+personal/
+deprecated/
+
+# --- Exclude git repos in the vendor directory, to prevent subprojects from being excluded
+
+cachemaster/vendor/.git
+cachemaster/vendor/**/.git
+
+# --- Exclude workflow cruft
+
+/.idea/*
+.*~
+
+# --- Include .gitignore directives
+
+!.gitignore
+!*/.gitignore
