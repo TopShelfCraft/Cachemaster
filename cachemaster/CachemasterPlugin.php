@@ -127,7 +127,7 @@ class CachemasterPlugin extends BasePlugin
 		{
 			return;
 		}
-		// return new CachemasterTwigExtension();
+		return new CachemasterTwigExtension();
 	}
 
 
@@ -149,10 +149,6 @@ class CachemasterPlugin extends BasePlugin
 		Craft::import('plugins.cachemaster.twigextensions.*');
 		Craft::import('plugins.cachemaster.etc.cache.*');
 		Craft::import('plugins.cachemaster.CachemasterStaticHandler');
-
-//		$twig = craft()->templates->getTwig();
-//		$loader = new Cachemaster_TemplateLoader();
-//		$twig->setLoader($loader);
 
 		// Output caching
 		craft()->cachemaster_outputCache->onCachemasterInit();

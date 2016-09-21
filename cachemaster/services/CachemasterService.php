@@ -411,36 +411,4 @@ class CachemasterService extends BaseApplicationComponent
 	}
 
 
-	/**
-	 * Pre-processes a source template to replace any `{% nocache %}` tags with
-	 * Cachemaster-wrapped verbatim text. (This prevents it from being parsed now, so it can be parsed later.)
-	 *
-	 * @param string $source The source template string
-	 *
-	 * @return string The processed template
-	 */
-	public function preparseSource($source)
-	{
-
-		$startTags  = array('{% nocache %}', '{%nocache%}', '{% nocache%}', '{%nocache %}');
-		$endTags  = array('{% endnocache %}', '{%endnocache%}', '{% endnocache%}', '{%endnocache %}');
-		$startReplacement = '{% cachemasterparse %}{% verbatim %}';
-		$endReplacement = '{% endverbatim %}{% endcachemasterparse %}';
-
-		if ($this->getIsEnabled())
-		{
-			$source = str_replace($startTags, $startReplacement, $source);
-			$source = str_replace($endTags, $endReplacement, $source);
-		}
-		else
-		{
-			$source = str_replace($startTags, null, $source);
-			$source = str_replace($endTags, null, $source);
-		}
-
-		return $source;
-
-	}
-
-
 }
