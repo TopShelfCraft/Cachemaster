@@ -282,8 +282,6 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 
 	/**
 	 * End the Output Cache process
-	 *
-	 * @return bool
 	 */
 	public function end()
 	{
@@ -292,6 +290,13 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 
 		$content = ob_get_contents();
 		// ob_end_flush();
+
+		// Bypass the cache if the content contains unresolved image transforms.
+
+		if (CachemasterHelper::containsTransformUrl($content))
+		{
+			return;
+		}
 
 		// Write the cache
 
@@ -365,6 +370,31 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 		}
 
 		return $content;
+
+	}
+
+
+	/**
+	 * Returns the path to the static cache folder.
+	 *
+	 * This will be located at craft/storage/runtime/cachemaster/static/ by default,
+	 * but that can be overridden with the 'staticCachePath' config setting in craft/config/cachemaster.php.
+	 *
+	 * @return string The path to the static cache folder.
+	 */
+	public function getStaticCachePath()
+	{
+
+		$path = craft()->config->get('staticCachePath', 'cachemaster');
+
+		if (!$path)
+		{
+			$path = craft()->path->getRuntimePath() . 'cachemaster/static';
+		}
+
+		IOHelper::ensureFolderExists($path);
+
+		return $path;
 
 	}
 

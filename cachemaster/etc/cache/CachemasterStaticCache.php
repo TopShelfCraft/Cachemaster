@@ -101,7 +101,7 @@ class CachemasterStaticCache extends \CFileCache
 
 		if (!$this->cachePath)
 		{
-			$this->cachePath = $this->getCachePath();
+			$this->cachePath = craft()->cachemaster_outputCache->getStaticCachePath();
 		}
 
 		parent::init();
@@ -211,31 +211,6 @@ class CachemasterStaticCache extends \CFileCache
 				return false;
 			}
 		}
-
-	}
-
-
-	/**
-	 * Returns the path to the file cache folder.
-	 *
-	 * This will be located at craft/storage/runtime/cachemaster/static/ by default,
-	 * but that can be overridden with the 'staticCachePath' config setting in craft/config/cachemaster.php.
-	 *
-	 * @return string The path to the file cache folder.
-	 */
-	public function getCachePath()
-	{
-
-		$path = craft()->config->get('staticCachePath', 'cachemaster');
-
-		if (!$path)
-		{
-			$path = craft()->path->getRuntimePath() . 'cachemaster/static';
-		}
-
-		IOHelper::ensureFolderExists($path);
-
-		return $path;
 
 	}
 

@@ -13,6 +13,9 @@ namespace Craft;
 class CachemasterPlugin extends BasePlugin
 {
 
+
+	// ---- PLUGIN BOILERPLATE
+
 	/**
 	 * @return string
 	 */
@@ -117,19 +120,6 @@ class CachemasterPlugin extends BasePlugin
 	}
 
 
-	/**
-	 * @return CachemasterTwigExtension
-	 * @throws \Exception
-	 */
-	public function addTwigExtension()
-	{
-		if (!craft()->cachemaster->getIsEnabled())
-		{
-			return;
-		}
-		return new CachemasterTwigExtension();
-	}
-
 
 	/**
 	 * @throws \Exception
@@ -158,6 +148,37 @@ class CachemasterPlugin extends BasePlugin
 		};
 
 	}
+
+
+	// --- HOOKS
+
+
+	/**
+	 * @return array
+	 */
+	public function registerCachePaths()
+	{
+		return [
+			craft()->cachemaster_outputCache->getStaticCachePath() => Craft::t('Cachemaster - Static Cache'),
+		];
+	}
+
+
+	/**
+	 * @return CachemasterTwigExtension
+	 * @throws \Exception
+	 */
+	public function addTwigExtension()
+	{
+		if (!craft()->cachemaster->getIsEnabled())
+		{
+			return;
+		}
+		return new CachemasterTwigExtension();
+	}
+
+
+	// --- UTILITIES
 
 
 	/**

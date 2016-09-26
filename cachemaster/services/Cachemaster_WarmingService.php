@@ -14,20 +14,6 @@ use Dompdf\Image\Cache;
 class Cachemaster_WarmingService extends BaseApplicationComponent
 {
 
-	private $_transformUrlPattern;
-
-	/**
-	 *
-	 */
-	public function init()
-	{
-
-		parent::init();
-
-		$this->_transformUrlPattern = UrlHelper::getSiteUrl( craft()->config->get('resourceTrigger') . '/transforms' );
-
-	}
-
 	/**
 	 *
 	 */
@@ -196,7 +182,7 @@ class Cachemaster_WarmingService extends BaseApplicationComponent
 
 			$body = $response->getBody(true);
 
-			if ($this->_containsTransformUrl($body))
+			if (CachemasterHelper::containsTransformUrl($body))
 			{
 
 				CachemasterPlugin::log("Found transform generation URLs in {$url}");
@@ -204,7 +190,7 @@ class Cachemaster_WarmingService extends BaseApplicationComponent
 				preg_match_all('!https?://\S+!', $body, $matches);
 				foreach($matches[0] as $foundUrl)
 				{
-					if ($this->_containsTransformUrl($foundUrl))
+					if (CachemasterHelper::containsTransformUrl($foundUrl))
 					{
 						$this->fetchUrl($foundUrl, null, false);
 					}
@@ -224,19 +210,6 @@ class Cachemaster_WarmingService extends BaseApplicationComponent
 			CachemasterPlugin::log("Problem fetching URL: {$url}");
 			return false;
 		}
-
-	}
-
-	private function _containsTransformUrl($str = '')
-	{
-
-		/**
-		 * stripslashes($body) in case the URL has been JS-encoded or something.
-		 * Can't use getResourceUrl() here because that will append ?d= or ?x= to the URL.
-		 * (This is imitating logic from TemplateCacheService.)
-		 */
-		// CachemasterPlugin::log("Checking {$str} against " . $this->_transformUrlPattern . " ...");
-		return strpos(stripslashes($str), $this->_transformUrlPattern) !== false;
 
 	}
 

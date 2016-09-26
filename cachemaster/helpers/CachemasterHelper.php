@@ -114,6 +114,10 @@ class CachemasterHelper
 
 
 	/**
+	 * Returns the number of seconds between now and end of the provided duration.
+	 * The duration may be provided as a number of seconds, a target DateTime, a duration string (e.g. '2 weeks'),
+	 * or any valid string input from which DateInterval::createFromDateString() can derive a date.
+	 *
 	 * @param null $duration
 	 *
 	 * @return int
@@ -151,6 +155,29 @@ class CachemasterHelper
 		$seconds = $expiryDate->getTimestamp() - DateTimeHelper::currentUTCDateTime()->getTimestamp();
 		CachemasterPlugin::log("Generated expiry seconds: " . $seconds);
 		return $seconds;
+
+	}
+
+
+	/**
+	 * Determines whether a string contains image transform URLs
+	 * (useful because we usually don't want to cache a template containing unresovled transforms)
+	 *
+	 * @param string $str
+	 *
+	 * @return bool
+	 */
+	public static function containsTransformUrl($str = '')
+	{
+
+		$transformUrlPattern = UrlHelper::getSiteUrl( craft()->config->get('resourceTrigger') . '/transforms' );
+
+		/**
+		 * stripslashes($body) in case the URL has been JS-encoded or something.
+		 * Can't use getResourceUrl() here because that will append ?d= or ?x= to the URL.
+		 * (This is imitating logic from TemplateCacheService.)
+		 */
+		return strpos(stripslashes($str), $transformUrlPattern) !== false;
 
 	}
 
