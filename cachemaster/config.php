@@ -21,5 +21,6 @@ return array(
 	'addOutputCacheDebugInfo' => true,
 
 	'staticCachePath' => null,
+	'staticCacheBypassIfLoggedIn' => null,
 
 );

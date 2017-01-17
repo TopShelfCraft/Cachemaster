@@ -98,9 +98,20 @@ class CachemasterStaticHandler
 
 			$entry = json_decode(file_get_contents($cacheFile), true)[0];
 
+			// Bypass expired entries
 			if ($entry['expiryTime'] < time())
 			{
 				return;
+			}
+
+			// Check for bypass-triggering cookies
+			foreach ($entry['bypassCookies'] as $cookie)
+			{
+				if (isset($_COOKIE[$cookie]))
+				{
+					HeaderHelper::setHeader(["X-Cachemaster-BypassCookie: {$cookie}"]);
+					return;
+				}
 			}
 
 			HeaderHelper::setHeader($entry['headers']);

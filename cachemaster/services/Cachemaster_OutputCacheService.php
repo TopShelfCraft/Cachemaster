@@ -308,6 +308,12 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 				'X-CacheMaster-CachedUntil' => $this->getExpiryDate()->w3c(),
 			]);
 
+			$bypassCookies = [];
+			if (true || craft()->config->get('staticCacheBypassIfLoggedIn', 'cachemaster'))
+			{
+				$bypassCookies[] = craft()->userSession->getStateKeyPrefix();
+			}
+
 			$seconds = CachemasterHelper::getExpirySeconds($this->getExpiryDate());
 
 			$entry = [
@@ -320,6 +326,7 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 				'tags' => [],
 				'content' => $content,
 				'headers' => $headers,
+				'bypassCookies' => $bypassCookies,
 			];
 
 			if ($this->_method == CachemasterCacheMethod::CachemasterStatic)
