@@ -222,7 +222,17 @@ class CachemasterStaticCache extends \CFileCache
 	 */
 	public function getCacheFile($key)
 	{
+		/*
+		 * We need to generate a hash from our key, to prevent the possibility of the filename being too long for
+		 * file_get_contents() to eventually open.
+		 *
+		 * Our keys include the path, and the upper bound on URL length (2083 chars)
+		 * is way beyond the upper bound for filenames length that `fopen` will handle without complaining.
+		 *
+		 * TODO: Maybe do this earlier, via this->hashKey, instead?
+		 */
 		$name = CachemasterStaticHandler::cleanFilename($key);
+		$name = sha1($name);
 		return parent::getCacheFile($name);
 	}
 

@@ -75,6 +75,7 @@ class CachemasterStaticHandler
 
 		$key = static::getStaticKey();
 		$filename = 'Cachemaster__' . static::cleanFilename($key);
+		$filename = sha1($filename);
 
 		$D = DIRECTORY_SEPARATOR;
 
