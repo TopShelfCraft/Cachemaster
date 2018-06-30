@@ -116,6 +116,10 @@ class CachemasterStaticHandler
 			}
 
 			HeaderHelper::setHeader($entry['headers']);
+			if (isset($entry['status']))
+			{
+				http_response_code($entry['status']);
+			}
 
 			$output = static::addDebugInfo($entry['content'], $entry);
 			echo $output;
@@ -146,6 +150,7 @@ class CachemasterStaticHandler
 
 		$debugInfo = "<!-- Served from Cachemaster Static Cache -->"
 			. (!empty($entry['static_key']) ? "<!-- Cachemaster static key: " . $entry['static_key'] . " -->" : '')
+			. "<!-- Cachemaster status: {$entry['status']} -->"
 			. "<!-- Cachemaster path: {$entry['path']} -->"
 			. "<!-- Cachemaster expiration: {$entry['debug:expiryDate']} -->";
 

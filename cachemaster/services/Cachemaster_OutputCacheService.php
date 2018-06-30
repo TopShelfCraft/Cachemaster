@@ -238,6 +238,10 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 			{
 
 				HeaderHelper::setHeader($entry['headers']);
+				if (isset($entry['status']))
+				{
+					http_response_code($entry['status']);
+				}
 
 				$output = $this->maybeAddDebugInfo($entry['content'], $entry);
 				echo $output;
@@ -326,6 +330,7 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 				'tags' => [],
 				'content' => $content,
 				'headers' => $headers,
+				'status' => http_response_code(),
 				'bypassCookies' => $bypassCookies,
 			];
 
@@ -362,6 +367,7 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 
 		$debugInfo = "<!-- Cachemaster status: Served from cache. -->"
 			. "<!-- Cachemaster key: {$entry['fullKey']} -->"
+			. "<!-- Cachemaster status: {$entry['status']} -->"
 			. !empty($entry['static_key']) ? "<!-- Cachemaster static key: " . $entry['static_key'] . " -->" : ''
 			. "<!-- Cachemaster path: {$entry['path']} -->"
 			. "<!-- Cachemaster expiration: {$entry['debug:expiryDate']} -->";
