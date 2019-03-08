@@ -62,10 +62,10 @@ class CachemasterStaticHandler
 	 *
 	 * @return string
 	 */
-	public static function cleanFilename($name)
+	public static function getHashedFilename($name)
 	{
-		$name = IOHelper::cleanFilename($name, false);
 		if (empty($name)) $name = '-';
+		$name = 'Cachemaster__' . sha1($name);
 		return $name;
 	}
 
@@ -74,8 +74,7 @@ class CachemasterStaticHandler
 	{
 
 		$key = static::getStaticKey();
-		$filename = 'Cachemaster__' . static::cleanFilename($key);
-		$filename = sha1($filename);
+		$filename = static::getHashedFilename($key);
 
 		$D = DIRECTORY_SEPARATOR;
 
@@ -141,7 +140,7 @@ class CachemasterStaticHandler
 	public static function addDebugInfo($content = null, $entry = null)
 	{
 
-		if (!CACHEMASTER_STATIC_DEBUG )
+		if (!CACHEMASTER_STATIC_DEBUG)
 		{
 			return $content;
 		}

@@ -73,7 +73,7 @@ class CachemasterPlugin extends BasePlugin
 	 */
 	public function getVersion()
 	{
-		return '0.2.1';
+		return '1.0.0';
 	}
 
 

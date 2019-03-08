@@ -21,7 +21,7 @@ class CachemasterStaticCache extends \CFileCache
 	/**
 	 * @var string a string prefixed to every cache key so that it is unique.
 	 */
-	public $keyPrefix = 'Cachemaster__';
+	public $keyPrefix = '';
 
 	/**
 	 * @var boolean whether to md5-hash the cache key for normalization purposes.
@@ -229,10 +229,9 @@ class CachemasterStaticCache extends \CFileCache
 		 * Our keys include the path, and the upper bound on URL length (2083 chars)
 		 * is way beyond the upper bound for filenames length that `fopen` will handle without complaining.
 		 *
-		 * TODO: Maybe do this earlier, via this->hashKey, instead?
+		 * TODO: Maybe do this earlier, via this->hashKey, instead? (Pretty sure Yii uses MD5, and we'd like something less prone to collisions.)
 		 */
-		$name = CachemasterStaticHandler::cleanFilename($key);
-		$name = sha1($name);
+		$name = CachemasterStaticHandler::getHashedFilename($key);
 		return parent::getCacheFile($name);
 	}
 

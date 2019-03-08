@@ -365,7 +365,7 @@ class Cachemaster_OutputCacheService extends BaseApplicationComponent
 
 		// TODO: Expand this to work with other (non-XML) content types?
 
-		$debugInfo = "<!-- Cachemaster status: Served from cache. -->"
+		$debugInfo = "<!-- Served from Cachemaster cache. -->"
 			. "<!-- Cachemaster key: {$entry['fullKey']} -->"
 			. "<!-- Cachemaster status: {$entry['status']} -->"
 			. !empty($entry['static_key']) ? "<!-- Cachemaster static key: " . $entry['static_key'] . " -->" : ''
